@@ -1,0 +1,56 @@
+
+=================================================TP 1 SSH BEGIN=================================================
+
+
+openssh-server ( sshd ( service ) etc... ) /etc/ssh/sshd_config // d signifie Daemon
+openssh-client ( ssh etc... ) /etc/ssh/ssh_config
+
+~/.ssh/config // configuration ssh client on peut le supprimer
+
+ip r // ip route affichage de la table de routage
+ip addr // ip address affiche l'adressage reseau eth0
+
+
+ssh-keygen -lf /etc/ssh/ssh_host_ecdsa_key.pub
+
+-l clé par defaut de l'utilisateur
+-f precision d'une clé
+
+ls /etc/ssh/*key*.pub
+
+//.pub = public
+
+//pour se connecter en root : il faut modifier sshd_config et mettre à la ligne 'PermitRootLogin' à 'yes'
+//une fois la clé RSA configuré remettre à 'without-password'
+
+ssh root@192.168.194.128 //connexion ssh
+
+
+
+The authenticity of host '192.168.194.128 (192.168.194.128)' can't be established.
+ECDSA key fingerprint is 91:a3:02:0b:a1:29:0e:dc:50:9f:f0:08:90:9b:3c:0d.
+Are you sure you want to continue connecting (yes/no)? 
+
+//Bien verifier l'empreinte !!!! avant de mettre yes
+
+
+ssh_host_*_key_% // * correspond aux différentes méthodes de cryptages
+
+
+ssh-keygen // generation de clés ne rien modifier par defaut RSA 
+
+//si on veut du DSA ou du ECDSA il faut utiliser l'option "-t dsa"
+
+ssh-keygen -R nom_de_la_machine // supprime ~/.ssh/knowns_hosts
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.194.128 //crée le fichier si il n'existe pas 
+d'autorisation de clé rsa.
+
+// '-i ~/.ssh/id_rsa.pub' n'est pas necessaire
+
+une variante : cat ~/.ssh/id_rsa.pub | ssh root@192.168.194.128 "cat - >> ~/.ssh/authorized_keys"
+
+
+//root is root
+
+=================================================TP 1 SSH END=================================================

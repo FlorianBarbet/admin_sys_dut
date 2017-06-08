@@ -1,0 +1,64 @@
+
+=================================================TP 2 APT/scripts BEGIN=================================================
+
+
+	fichiers pour configurer :
+
+		apt.conf permet de modifier les proxy pour les commandes APT.
+
+		sources.list est une liste des package sources qui sont mis à jour.
+
+	commandes : 
+dpkg-query affiche les informations relatifs aux paquets :
+				dpkg-query -l [nom] permet d'afficher tout les paquets par rapport au nom
+				dpkg-query -L [paquet] permet d'afficher les fichiers du paquet
+				dpkg-query -S mon_chemin permet d'afficher quel paquetage à installer ce fichier				
+dpkg-reconfigure permet de reconfigurer des paquets locaux : 
+
+				depkg-reconfigure nom_paquet permet de reconfigurer le paquet nom_paquet
+
+APT outil de gestion des paquets : 
+
+apt-cache permet de retrouver les paquets distants:
+				apt-cache search nom_rechercher | less affiche la liste des paquets distants recherché par nom_rechercher
+
+apt-get gestion d'installation et de MàJ:
+
+				apt-get update
+				apt-get upgrade
+				apt-get install
+
+transmission X11 :
+		ssh -X user@address
+
+		
+RAPPEL :
+bash :
+
+cmd < file ; cmd utilise le contenu de file
+cmd > file ; remplace le contenu de file par le resultat de cmd sur la sortie standard
+cmd >> file ; ajoute le resultat de cmd à file
+cmd << key ; entrée standard lit le resultat jusqu'à key 
+
+en général :
+cmd << EOF <file ; lit tout un fichier.
+
+i<
+i> avec i = {0,1,2} ; 0 entrée standard ; 1 sortie standard ; 2 sortie erreur ; i est un descripteur
+
+cmd 1>fileSTD 2>fileERR
+cmd1 | cmd2 ; cm1 s'execute sort dans l'entrée de la cmd2 et cmd2 s'execute en fonction de cmd1.
+
+cmd -- ; après ce -- ne sera pas pris en option d'une cmd
+
+grep mot_clé file ; grep va chercher l'ensemble des ligne qui contiennent mot_clé
+cut -d -f ; cut copie une liste d'octet, -d = delimiter, -f n avec n={1,2,3,4,5,6,7,...} field pour champs n-m = intervalle de n à m ; n,m les champs n et m
+
+adduser et useradd
+getent group info-n3p2 | cut -d : -f 4 
+cmd1 && cmd2 ; ET logique 0 ET x = 0 ; 1 ET x = x
+cmd1 || cmd2 ; OU logique 0 OU x = x ; 1 OU x = 1
+
+
+
+=================================================TP 2 APT/scripts SSH END=================================================
