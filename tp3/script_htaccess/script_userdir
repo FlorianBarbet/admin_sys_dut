@@ -1,0 +1,27 @@
+for login in $(getent passwd | grep home |cut -d : -f 1)
+do
+	rep=$(echo  $(getent passwd | grep $login | cut -d : -f 6))
+
+	if [ -e $rep/web ]
+	then
+		if [ -d $rep/web ]
+		then
+			echo "[INFO]$login/web OK"
+		else
+			echo "[WARNING]Suppression du fichier $rep/web"
+			rm -rf $rep/web
+			mkdir $rep/web
+		fi		
+	else
+		mkdir $rep/web
+	fi
+		
+	./model_access $login>$rep/web/.htaccess
+	if [ $? = 0 ]
+	then
+		echo "Repertoire et .htaccess [OK]"
+	else
+		echo "Problème rencontré"
+	fi
+
+done

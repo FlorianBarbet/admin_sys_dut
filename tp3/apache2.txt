@@ -1,0 +1,109 @@
+/etc/network/interfaces :
+
+auto eth0
+iface eth0 inet static
+	address 192.168.37.200/24
+	netmask 255.255.255.0
+	gateway 192.168.37.1	
+/etc/hosts
+
+IP		Nom
+192.168.37.200 serveur
+192.168.37.200 serveur.tp
+192.168.37.200 serveur.iut.fr
+192.168.37.200 www.iut.fr
+192.168.37.200 www.pere.noel
+
+w3m -> apt-get install w3m
+chromium -> apt-get install chromium
+firefox-esr -> apt-get install firefox-esr
+
+apt-get install apache2
+apt-get install apache2-doc
+
+mkdir /var/www/html/www.pere.noel
+nano /var/www/html/www.pere.noel/index.html
+
+service apache2 restart
+
+dans local-tp3.conf créer une forme de lien avec l'url de serveur/doc vers le repertoire
+/usr/share/doc/apache2-doc/manual/
+donc serveur/doc = serveur/manual
+
+Alias /doc /usr/share/doc/apache2-doc/manual/
+
+<Directory "/usr/share/doc/apache2-doc/manual/">
+    Options Indexes FollowSymlinks
+    AllowOverride None
+    Require all granted
+    AddDefaultCharset off
+</Directory>
+
+Modifier le repertoire racine du serveur web (modifier la directive tel que ci dessous):
+DocumentRoot /var/www/html/default
+
+Activation et configuration de mod_user_dir il modifier public_html en web ( question de priorité ) :
+
+Configuration ->	UserDir web
+Activation dans le terminal ->		a2enmod userdir
+
+Empécher l'auto-generation d'index ajouter dans /etc/apache2/sites-enabled/000-default.conf:
+
+	<Directory /var/www/html/default>
+		Options -Indexes
+	</Directory>
+
+
+Pour l'activation de l'auto-generation d'index ( "index of" ) seulement dans les compte utilisateurs il faut utiliser un fichier .htaccess et y ajouter cette ligne : Options +Indexes
+
+Si cela ne marche pas il faudrat verifier dans /etc/apache2/mods-enabled/userdir.conf :
+
+
+<IfModule mod_userdir.c>
+        UserDir web
+        UserDir disabled root
+
+        <Directory /home/*/web>
+                AllowOverride All
+                Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+
+                <Limit GET POST OPTIONS>
+                        Require all granted
+                </Limit>
+                <LimitExcept GET POST OPTIONS>
+                        Require all denied
+                </LimitExcept>
+
+        </Directory>
+</IfModule>
+
+la ligne importante c'est le AllowOverride All; comme on peut le traduire Permettre l'ecrasement ! Le fichier htaccess va modifier une configuration que l'on peut faire dans les configuration donc il faut la permission venant de cette configuration.
+
+Pour l'authentification il nous faudrat 4 lignes de plus dans le htaccess :
+
+AuthName "Veuillez vous connecter ce site est securise" 			# permet d'indiquer un message avant l'authentification 
+AuthType Basic 									# c'est le type d'authentification
+AuthUserFile "/var/www/html/default/.htpasswd" 
+										# le fichier contenant les mot de passe ( .htpasswd ) en general on le met dans 
+										#/usr/apache2/.htpasswd Perso j'ai pris /var/www/html/default parce que je suis rebel !
+
+Require user un_login
+										# On peut spécifier si l'on veut qu'une seule personne ait accés si on veut juste que ce soit
+										#tout ceux qui sont dans le htpasswd on modifiera avec : valid-user
+
+Bon c'est pas tout mais pour le htpasswd ? 
+
+c'est très simple sous linux : htpasswd -nb login mdp > .htpasswd
+htpasswd va donner les lignes à mettre dans le htpasswd c'est à nous de deplacer le flux !
+En faite on a besoin de cette commande pour "hacher" ou crypter le mot de passe.
+
+sous windows il existe des sites qui le font pour vous sinon si vous êtes à l'aise avec php créer un fichier.php : <?= crypt('mon_mot_de_passe'); ?>
+
+Bon je suis gentil je vous donne un site : http://www.htaccesstools.com/htpasswd-generator/
+
+Si vous voulez j'ai fais quelques script sympas ( tout le travail est fait tout seul :p )
+
+( La suite bientot ! )
+
+
+

@@ -1,0 +1,5 @@
+echo "Options +Indexes"
+echo "AuthType Basic"
+echo 'AuthName "Password Required"'
+echo 'AuthUserFile "/var/www/html/default/.htpasswd"'
+echo "Require user $1"
