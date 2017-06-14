@@ -3,3 +3,13 @@ echo "AuthType Basic"
 echo 'AuthName "Password Required"'
 echo 'AuthUserFile "/var/www/html/default/.htpasswd"'
 echo "Require user $1"
+
+#Ce Rewrite n'est pas completement fonctionnel
+# Je ne sais pas pourquoi mais lorsque l'on donne :
+# serveur/~login/monchemin ça marche
+# mais avec serveur/~login/monchemin/ ça ne marche plus
+
+echo "RewriteEngine on"
+echo "RewriteCond %{REQUEST_FILENAME}\.html -f"
+echo "RewriteCond %{REQUEST_FILENAME}/ !-d"
+echo "RewriteRule ^/(.*)/$ $1.html"
